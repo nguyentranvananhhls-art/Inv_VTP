@@ -3,11 +3,11 @@ import pandas as pd
 from datetime import date
 from supabase import create_client, Client
 
-# --- KẾT NỐI SUPABASE THẬT ---
-SUPABASE_URL = "https://jhlipidbcbubjiajenwq.supabase.co/rest/v1/"
-SUPABASE_KEY = "sb_publishable_ApT1F6UiLwwsgpfJ33dTsW_b5bYEaWf"
+# --- KẾT NỐI SUPABASE ---
+url = st.secrets["SUPABASE_URL"]
+key = st.secrets["SUPABASE_KEY"]
 
-supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+supabase: Client = create_client(url, key)
 
 st.set_page_config(page_title="Dashboard Tồn Kho - VTP", layout="wide")
 
