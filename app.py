@@ -4,7 +4,7 @@ from datetime import date
 from supabase import create_client, Client
 
 # --- KẾT NỐI SUPABASE THẬT ---
-SUPABASE_URL = "https://jhlipidbcubbjiajenwq.supabase.co"
+SUPABASE_URL = "https://jhlipidbcbubjiajenwq.supabase.co/rest/v1/"
 SUPABASE_KEY = "sb_publishable_ApT1F6UiLwwsgpfJ33dTsW_b5bYEaWf"
 
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
