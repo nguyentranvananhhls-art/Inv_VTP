@@ -90,27 +90,42 @@ if 'ngay' in df_hien_thi.columns:
     
     # --- BIỂU ĐỒ ---
     st.subheader("Phân tích tổng quan")
-    c1, c2 = st.columns(2)
-    
-    with c1:
-        st.markdown("**Top 10 Giá trị tồn kho**")
-        d1 = df_hien_thi.nlargest(10, 'thanh_tien')
-        b1 = alt.Chart(d1).mark_bar().encode(
-            x=alt.X('thanh_tien:Q', title=None),
-            y=alt.Y('ten:N', sort='-x', title=None),
-            color=alt.Color('ten:N', legend=None)
-        )
-        st.altair_chart(b1, use_container_width=True)
+    c1, c2, c3 = st.columns([1.3, 1.3, 1])
         
-    with c2:
-        st.markdown("**Top 10 Số lượng tồn kho**")
-        d2 = df_hien_thi.nlargest(10, 'ton')
-        b2 = alt.Chart(d2).mark_bar().encode(
-            x=alt.X('ton:Q', title=None),
-            y=alt.Y('ten:N', sort='-x', title=None),
-            color=alt.Color('ten:N', legend=None)
-        )
-        st.altair_chart(b2, use_container_width=True)
+        with c1:
+            st.markdown("**Top 10 Giá trị tồn kho**")
+            d1 = df_hien_thi.nlargest(10, 'thanh_tien')
+            b1 = alt.Chart(d1).mark_bar().encode(
+                x=alt.X('thanh_tien:Q', title=None),
+                y=alt.Y('ten:N', sort='-x', title=None),
+                color=alt.Color('ten:N', legend=None)
+            )
+            st.altair_chart(b1, use_container_width=True)
+            
+        with c2:
+            st.markdown("**Top 10 Số lượng tồn kho**")
+            d2 = df_hien_thi.nlargest(10, 'ton')
+            b2 = alt.Chart(d2).mark_bar().encode(
+                x=alt.X('ton:Q', title=None),
+                y=alt.Y('ten:N', sort='-x', title=None),
+                color=alt.Color('ten:N', legend=None)
+            )
+            st.altair_chart(b2, use_container_width=True)
+
+        with c3:
+            st.markdown("**Tỷ trọng Trạng thái Kho**")
+            d3 = df_hien_thi['trang_thai'].value_counts().reset_index()
+            d3.columns = ['trang_thai', 'so_luong']
+            b3 = alt.Chart(d3).mark_arc(innerRadius=45).encode(
+                theta=alt.Theta('so_luong:Q'),
+                color=alt.Color('trang_thai:N', 
+                                scale=alt.Scale(domain=['Còn hàng', 'Hết hàng', 'Âm kho'], 
+                                                range=['#2ecc71', '#f1c40f', '#e74c3c']),
+                                legend=alt.Legend(title=None, orient="bottom")),
+                tooltip=['trang_thai', 'so_luong']
+            )
+            st.altair_chart(b3, use_container_width=True)
+            
     # --- 4. BẢNG DỮ LIỆU CHÍNH ---
     st.subheader("Danh sách tồn kho chi tiết")
     cols = [c for c in ['ma', 'ten', 'dvt', 'ton', 'gia', 'thanh_tien', 'trang_thai'] if c in df_hien_thi.columns]
