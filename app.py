@@ -88,10 +88,10 @@ if 'ngay' in df_hien_thi.columns:
     
     import altair as alt
     
-    # --- BIỂU ĐỒ ---
+# --- BIỂU ĐỒ ---
     st.subheader("Phân tích tổng quan")
     c1, c2, c3 = st.columns([1.3, 1.3, 1])
-        
+    
     with c1:
         st.markdown("**Top 10 Giá trị tồn kho**")
         d1 = df_hien_thi.nlargest(10, 'thanh_tien')
@@ -99,31 +99,34 @@ if 'ngay' in df_hien_thi.columns:
             x=alt.X('thanh_tien:Q', title=None),
             y=alt.Y('ten:N', sort='-x', title=None),
             color=alt.Color('ten:N', legend=None)
-        )
+        ).properties(height=320)
         st.altair_chart(b1, use_container_width=True)
         
     with c2:
-        st.markdown("**Top 10 Số lượng tồn kho**")
-        d2 = df_hien_thi.nlargest(10, 'ton')
-        b2 = alt.Chart(d2).mark_bar().encode(
-            x=alt.X('ton:Q', title=None),
-            y=alt.Y('ten:N', sort='-x', title=None),
-            color=alt.Color('ten:N', legend=None)
-        )
+        st.markdown("**Phân bổ Giá trị & Số lượng**")
+        b2 = alt.Chart(df_hien_thi).mark_circle(size=60).encode(
+            x=alt.X('gia:Q', title="Đơn giá"),
+            y=alt.Y('ton:Q', title="Tồn kho"),
+            color=alt.Color('trang_thai:N', 
+                            scale=alt.Scale(domain=['Còn hàng', 'Hết hàng', 'Âm kho'], 
+                                            range=['#b5ead7', '#e2f0cb', '#ff9aa2']),
+                            legend=None),
+            tooltip=['ma', 'ten', 'ton', 'gia']
+        ).properties(height=320)
         st.altair_chart(b2, use_container_width=True)
 
     with c3:
-        st.markdown("**Tỷ trọng Trạng thái Kho**")
+        st.markdown("**Tỷ trọng Trạng thái**")
         d3 = df_hien_thi['trang_thai'].value_counts().reset_index()
         d3.columns = ['trang_thai', 'so_luong']
         b3 = alt.Chart(d3).mark_arc(innerRadius=45).encode(
             theta=alt.Theta('so_luong:Q'),
             color=alt.Color('trang_thai:N', 
                             scale=alt.Scale(domain=['Còn hàng', 'Hết hàng', 'Âm kho'], 
-                                            range=["#95afdd", "#ffdfba", "#f5bb78"]),
+                                            range=['#b5ead7', '#e2f0cb', '#ff9aa2']),
                             legend=alt.Legend(title=None, orient="bottom")),
             tooltip=['trang_thai', 'so_luong']
-        )
+        ).properties(height=320)
         st.altair_chart(b3, use_container_width=True)
             
     # --- 4. BẢNG DỮ LIỆU CHÍNH ---
