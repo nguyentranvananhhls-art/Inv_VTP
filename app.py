@@ -86,20 +86,31 @@ if 'ngay' in df_hien_thi.columns:
 
     st.markdown("---")
     
+import altair as alt
+    
     # --- BIỂU ĐỒ ---
     st.subheader("Phân tích tổng quan")
     c1, c2 = st.columns(2)
     
     with c1:
-        st.markdown("**Top 10 Giá trị tồn kho (đ)**")
-        df_gt = df_hien_thi.nlargest(10, 'thanh_tien')[['ten', 'thanh_tien']].set_index('ten')
-        st.bar_chart(df_gt)
+        st.markdown("**Top 10 Giá trị tồn kho**")
+        d1 = df_hien_thi.nlargest(10, 'thanh_tien')
+        b1 = alt.Chart(d1).mark_bar().encode(
+            x=alt.X('thanh_tien:Q', title=None),
+            y=alt.Y('ten:N', sort='-x', title=None),
+            color=alt.Color('ten:N', legend=None)
+        )
+        st.altair_chart(b1, use_container_width=True)
         
     with c2:
         st.markdown("**Top 10 Số lượng tồn kho**")
-        df_sl = df_hien_thi.nlargest(10, 'ton')[['ten', 'ton']].set_index('ten')
-        st.bar_chart(df_sl)
-
+        d2 = df_hien_thi.nlargest(10, 'ton')
+        b2 = alt.Chart(d2).mark_bar().encode(
+            x=alt.X('ton:Q', title=None),
+            y=alt.Y('ten:N', sort='-x', title=None),
+            color=alt.Color('ten:N', legend=None)
+        )
+        st.altair_chart(b2, use_container_width=True)
     # --- 4. BẢNG DỮ LIỆU CHÍNH ---
     st.subheader("Danh sách tồn kho chi tiết")
     cols = [c for c in ['ma', 'ten', 'dvt', 'ton', 'gia', 'thanh_tien', 'trang_thai'] if c in df_hien_thi.columns]
