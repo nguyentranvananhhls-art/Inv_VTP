@@ -86,7 +86,7 @@ if 'ngay' in df_hien_thi.columns:
 
     st.markdown("---")
     
-import altair as alt
+    import altair as alt
     
     # --- BIỂU ĐỒ ---
     st.subheader("Phân tích tổng quan")
