@@ -75,25 +75,26 @@ if tu_khoa:
         df_hien_thi['ten'].astype(str).str.contains(tu_khoa, case=False, na=False)
     ]
 
-    # --- 3. HIỂN THỊ METRICS TỔNG QUAN ---
-    m1, m2, m3, m4 = st.columns(4)
-    m1.metric("Tổng số mặt hàng", len(df_hien_thi))
-    m2.metric("Tổng số lượng tồn", f"{df_hien_thi['ton'].sum():,.0f}")
-    m3.metric("Tổng giá trị tồn kho", f"{df_hien_thi['thanh_tien'].sum():,.0f} đ")
-    am_kho = len(df_hien_thi[df_hien_thi['trang_thai'] == 'Âm kho'])
-    het_hang = len(df_hien_thi[df_hien_thi['trang_thai'] == 'Hết hàng'])
-    m4.metric("Âm / Hết hàng", f"{am_kho} / {het_hang}")
+# --- 3. HIỂN THỊ METRICS TỔNG QUAN ---
+m1, m2, m3, m4 = st.columns(4)
+m1.metric("Tổng số mặt hàng", len(df_hien_thi))
+m2.metric("Tổng số lượng tồn", f"{df_hien_thi['ton'].sum():,.0f}")
+m3.metric("Tổng giá trị tồn kho", f"{df_hien_thi['thanh_tien'].sum():,.0f} đ")
+am_kho = len(df_hien_thi[df_hien_thi['trang_thai'] == 'Âm kho'])
+het_hang = len(df_hien_thi[df_hien_thi['trang_thai'] == 'Hết hàng'])
+m4.metric("Âm / Hết hàng", f"{am_kho} / {het_hang}")
 
-    st.markdown("---")
-    
-    # --- 4. BẢNG DỮ LIỆU CHÍNH ---
-    st.subheader("Danh sách tồn kho chi tiết")
-    cols_to_show = [c for c in ['ma', 'ten', 'dvt', 'ton', 'gia', 'thanh_tien', 'trang_thai'] if c in df_hien_thi.columns]
-    
-    st.dataframe(
-        df_hien_thi[cols_to_show],
-        use_container_width=True,
-        hide_index=True
-    )
+st.markdown("---")
+
+# --- 4. BẢNG DỮ LIỆU CHÍNH ---
+st.subheader("Danh sách tồn kho chi tiết")
+cols_to_show = [c for c in ['ma', 'ten', 'dvt', 'ton', 'gia', 'thanh_tien', 'trang_thai'] if c in df_hien_thi.columns]
+
+st.dataframe(
+    df_hien_thi[cols_to_show],
+    use_container_width=True,
+    hide_index=True
+)
+
 else:
     st.warning("⚠️ Không thể tải dữ liệu từ bảng/view `v_ton`. Bạn hãy kiểm tra lại kết nối.")
