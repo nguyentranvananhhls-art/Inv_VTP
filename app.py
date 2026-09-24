@@ -120,7 +120,7 @@ if 'ngay' in df_hien_thi.columns:
             theta=alt.Theta('so_luong:Q'),
             color=alt.Color('trang_thai:N', 
                             scale=alt.Scale(domain=['Còn hàng', 'Hết hàng', 'Âm kho'], 
-                                            range=["#5bd28d", "#dcca82", "#df8177"]),
+                                            range=["#c1e1c1", "#fdfd96", "#ff6961"]),
                             legend=alt.Legend(title=None, orient="bottom")),
             tooltip=['trang_thai', 'so_luong']
         )
