@@ -69,32 +69,32 @@ if 'ngay' in df_hien_thi.columns:
     df_hien_thi['trang_thai'] = df_hien_thi['ton'].apply(trang_thai)
 
 # --- LỌC TỪ KHÓA ---
-if tu_khoa:
-    df_hien_thi = df_hien_thi[
-        df_hien_thi['ma'].astype(str).str.contains(tu_khoa, case=False, na=False) | 
-        df_hien_thi['ten'].astype(str).str.contains(tu_khoa, case=False, na=False)
-    ]
+    if tu_khoa:
+        df_hien_thi = df_hien_thi[
+            df_hien_thi['ma'].astype(str).str.contains(tu_khoa, case=False, na=False) | 
+            df_hien_thi['ten'].astype(str).str.contains(tu_khoa, case=False, na=False)
+        ]
 
-# --- 3. HIỂN THỊ METRICS TỔNG QUAN ---
-m1, m2, m3, m4 = st.columns(4)
-m1.metric("Tổng số mặt hàng", len(df_hien_thi))
-m2.metric("Tổng số lượng tồn", f"{df_hien_thi['ton'].sum():,.0f}")
-m3.metric("Tổng giá trị tồn kho", f"{df_hien_thi['thanh_tien'].sum():,.0f} đ")
-am_kho = len(df_hien_thi[df_hien_thi['trang_thai'] == 'Âm kho'])
-het_hang = len(df_hien_thi[df_hien_thi['trang_thai'] == 'Hết hàng'])
-m4.metric("Âm / Hết hàng", f"{am_kho} / {het_hang}")
+    # --- 3. HIỂN THỊ METRICS TỔNG QUAN ---
+    m1, m2, m3, m4 = st.columns(4)
+    m1.metric("Tổng mặt hàng", len(df_hien_thi))
+    m2.metric("Tổng tồn", f"{df_hien_thi['ton'].sum():,.0f}")
+    m3.metric("Tổng giá trị", f"{df_hien_thi['thanh_tien'].sum():,.0f} đ")
+    am = len(df_hien_thi[df_hien_thi['trang_thai'] == 'Âm kho'])
+    het = len(df_hien_thi[df_hien_thi['trang_thai'] == 'Hết hàng'])
+    m4.metric("Âm/Hết", f"{am} / {het}")
 
-st.markdown("---")
+    st.markdown("---")
 
-# --- 4. BẢNG DỮ LIỆU CHÍNH ---
-st.subheader("Danh sách tồn kho chi tiết")
-cols_to_show = [c for c in ['ma', 'ten', 'dvt', 'ton', 'gia', 'thanh_tien', 'trang_thai'] if c in df_hien_thi.columns]
+    # --- 4. BẢNG DỮ LIỆU CHÍNH ---
+    st.subheader("Danh sách tồn kho chi tiết")
+    cols = [c for c in ['ma', 'ten', 'dvt', 'ton', 'gia', 'thanh_tien', 'trang_thai'] if c in df_hien_thi.columns]
 
-st.dataframe(
-    df_hien_thi[cols_to_show],
-    use_container_width=True,
-    hide_index=True
-)
+    st.dataframe(
+        df_hien_thi[cols],
+        use_container_width=True,
+        hide_index=True
+    )
 
 else:
-    st.warning("⚠️ Không thể tải dữ liệu từ bảng/view `v_ton`. Bạn hãy kiểm tra lại kết nối.")
+    st.warning("⚠️ Không thể tải dữ liệu từ view `v_ton`. Bạn hãy kiểm tra lại kết nối.")
