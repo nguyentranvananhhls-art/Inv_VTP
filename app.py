@@ -11,7 +11,7 @@ supabase: Client = create_client(url, key)
 
 st.set_page_config(page_title="Dashboard Tồn Kho - VTP", layout="wide")
 
-st.title("📦 Tồn Kho - Kho Công cụ dụng cụ & Tổng công ty")
+st.title("📦 VTP_Inventory Management Portal")
 
 # --- 1. LẤY DỮ LIỆU TỪ VIEW `v_ton` TRÊN SUPABASE ---
 @st.cache_data(ttl=10)
