@@ -85,6 +85,20 @@ if 'ngay' in df_hien_thi.columns:
     m4.metric("Âm/Hết", f"{am} / {het}")
 
     st.markdown("---")
+    
+    # --- BIỂU ĐỒ ---
+    st.subheader("Phân tích tổng quan")
+    c1, c2 = st.columns(2)
+    
+    with c1:
+        st.markdown("**Top 10 Giá trị tồn kho (đ)**")
+        df_gt = df_hien_thi.nlargest(10, 'thanh_tien')[['ten', 'thanh_tien']].set_index('ten')
+        st.bar_chart(df_gt)
+        
+    with c2:
+        st.markdown("**Top 10 Số lượng tồn kho**")
+        df_sl = df_hien_thi.nlargest(10, 'ton')[['ten', 'ton']].set_index('ten')
+        st.bar_chart(df_sl)
 
     # --- 4. BẢNG DỮ LIỆU CHÍNH ---
     st.subheader("Danh sách tồn kho chi tiết")
